@@ -858,7 +858,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 262395698023540318, guid: d8900788599f1d24db8f69d30d6e0a61, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.29
+      value: 8.78
       objectReference: {fileID: 0}
     - target: {fileID: 262395698023540318, guid: d8900788599f1d24db8f69d30d6e0a61, type: 3}
       propertyPath: m_LocalPosition.y
@@ -898,7 +898,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 551979656288194874, guid: d8900788599f1d24db8f69d30d6e0a61, type: 3}
       propertyPath: m_Name
-      value: Enemigo_2
+      value: Pako
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1463,7 +1463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4600754761599436109, guid: eb1c154ccb16b1c4a8ef2efe4813c889, type: 3}
       propertyPath: m_Name
-      value: Enemigo_1
+      value: Chabby
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
