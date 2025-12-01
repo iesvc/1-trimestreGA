@@ -144,12 +144,12 @@ TextureImporter:
       name: ExpresionesSheet_0
       rect:
         serializedVersion: 2
-        x: 336
-        y: 1419
-        width: 89
-        height: 83
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 1082
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.4720475, y: 0.3602375}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -166,12 +166,12 @@ TextureImporter:
       name: ExpresionesSheet_1
       rect:
         serializedVersion: 2
-        x: 585
-        y: 1426
-        width: 73
-        height: 70
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1082
+        y: 1082
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.4720475, y: 0.3602375}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -188,12 +188,12 @@ TextureImporter:
       name: ExpresionesSheet_2
       rect:
         serializedVersion: 2
-        x: 1417
-        y: 1418
-        width: 92
-        height: 83
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 0
+        y: 0
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.4720475, y: 0.3602375}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -210,12 +210,12 @@ TextureImporter:
       name: ExpresionesSheet_3
       rect:
         serializedVersion: 2
-        x: 1667
-        y: 1425
-        width: 74
-        height: 72
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 1082
+        y: 0
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.4720475, y: 0.3602375}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -228,55 +228,11 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
-    - serializedVersion: 2
-      name: ExpresionesSheet_4
-      rect:
-        serializedVersion: 2
-        x: 387
-        y: 342
-        width: 214
-        height: 18
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9c14319ae29d987a0800000000000000
-      internalID: -6374325003137891895
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: ExpresionesSheet_5
-      rect:
-        serializedVersion: 2
-        x: 1514
-        y: 262
-        width: 119
-        height: 126
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7fe5bcfcb4ee5ddb0800000000000000
-      internalID: -4767642621125632265
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: e7b55116761460248b99b21347bde146
     internalID: 0
     vertices: []
     indices: 
@@ -290,8 +246,6 @@ TextureImporter:
       ExpresionesSheet_1: 3174004868079623857
       ExpresionesSheet_2: 2725670525575880726
       ExpresionesSheet_3: -2389615518058247875
-      ExpresionesSheet_4: -6374325003137891895
-      ExpresionesSheet_5: -4767642621125632265
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
