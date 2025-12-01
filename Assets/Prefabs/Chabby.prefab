@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3032346373834819041}
   - component: {fileID: 8548191034098884032}
   - component: {fileID: 8777563097362395100}
-  - component: {fileID: 9011442003389651496}
   - component: {fileID: 1307159874107366794}
   m_Layer: 7
   m_Name: Chabby
@@ -127,25 +126,6 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
---- !u!114 &9011442003389651496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4600754761599436109}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1edaecc142357764792bb3646a974b80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: 0
-  patrolSpeed: 3
-  chaseSpeedMultiplier: 1.5
-  jumpForce: 5
-  detectionRange: 0.9
-  minChaseDistance: 0.5
-  jumpChanceOnHit: 0.5
 --- !u!50 &1307159874107366794
 Rigidbody2D:
   serializedVersion: 5
