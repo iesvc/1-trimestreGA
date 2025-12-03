@@ -150,18 +150,26 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // La lógica de colisión (cambiar dirección y saltar) solo debe ocurrir
-        // si el enemigo está PATRULLANDO.
-        if (currentState == EnemyState.Patrolling)
+        // Primero: si hemos chocado con el Player, le quitamos vida
+        if (collision.gameObject.CompareTag("Player"))
         {
-            // Si choca con el jugador, no queremos que cambie de dirección, así que ignoramos
-            if (collision.gameObject.CompareTag("Player"))
+            PlayerController pc = collision.gameObject.GetComponent<PlayerController>();
+            if (pc != null)
             {
-                ChangeDirection();
+                pc.QuitarVida();
+            }
+        }
+
+        // Después, tu lógica actual de colisión (patrulla, cambio de dirección, salto, etc.)
+        if (currentState == EnemyState.Patrolling)
+        {
+            // Si choca con el jugador, no queremos que cambie de dirección, así que ignoramos
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                return;
             }
 
-            // Cambiar dirección y Saltar
-            ChangeDirection();
+            ChangeDirection();
 
             if (Random.value < jumpChanceOnHit)
             {

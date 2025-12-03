@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 3836528157314350657}
   - component: {fileID: 4078782861653971846}
   - component: {fileID: 1459188385247579635}
-  - component: {fileID: 3751236353727511384}
+  - component: {fileID: 6796394477457792667}
   m_Layer: 0
   m_Name: Stella
   m_TagString: Untagged
@@ -164,7 +164,7 @@ MonoBehaviour:
   velocidadCaminar: 2
   velocidadCorrer: 4
   velocidadAgachado: 1
-  fuerzaSaltoBase: 20
+  fuerzaSaltoBase: 10
   multiplicadorSaltoCarrera: 0.5
   multiplicadorCorteSalto: 0.5
   checkSuelo: {fileID: 7935013344533665521}
@@ -174,7 +174,7 @@ MonoBehaviour:
     m_Bits: 8
   prefabProyectil: {fileID: 6278485847395416729, guid: 6d0e2e768a99cfe429eb228549a22622, type: 3}
   puntoDisparo: {fileID: 9207608127053582020}
-  fuerzaDisparoBase: 5
+  fuerzaDisparoBase: 8
   cadenciaDisparo: 0.2
   municionMaxima: 15
   tiempoRecarga: 2
@@ -206,8 +206,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &3751236353727511384
-CircleCollider2D:
+--- !u!70 &6796394477457792667
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -240,8 +240,9 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.46756327, y: 0.34532607}
-  m_Radius: 3.8224714
+  m_Offset: {x: -0.18451422, y: 0.23263693}
+  m_Size: {x: 4.4988985, y: 7.631283}
+  m_Direction: 0
 --- !u!1 &5016389596421215814
 GameObject:
   m_ObjectHideFlags: 0

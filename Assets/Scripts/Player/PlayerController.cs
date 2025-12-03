@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,12 +25,16 @@ public class PlayerController : MonoBehaviour
     public int municionMaxima = 15;
     public float tiempoRecarga = 2f;
 
+    [Header("Vida")]
+    public int vidas = 4;
+
     private Rigidbody2D rb;
     private float inputHorizontal;
     private bool estaEnSuelo;
     private bool agachado;
     private bool corriendo;
     private bool atacando;
+    public bool vulnerable = true;
 
     private bool bocaAbierta = false;
 
@@ -69,6 +74,8 @@ public class PlayerController : MonoBehaviour
         sprOjo = hijoOjos.GetComponent<SpriteRenderer>();
         sprBoca = hijoBoca.GetComponent<SpriteRenderer>();
         sprCu = hijoCuerpo.GetComponent<SpriteRenderer>();
+
+        vulnerable = true;
     }
 
     private void Update()
@@ -85,6 +92,58 @@ public class PlayerController : MonoBehaviour
         ChequearSuelo();
     }
 
+    public void QuitarVida()
+    {
+        if (vulnerable)
+        {
+            vulnerable = false;
+
+            vidas--;
+            Debug.Log("Has perdido una vida");
+
+            // Si gestionas el fin de juego en otro sitio, aquí solo avisas.
+            // if (vidas <= 0) FinJuego(); // <- solo si tienes este método
+
+            StartCoroutine(ParpadeoDmg(1.5f));
+            Invoke(nameof(HacerVulnerable), 1.5f);
+        }
+    }
+    private IEnumerator ParpadeoDmg(float duracion)
+    {
+        float tiempo = 0f;
+
+        // Guardamos los colores originales de cada parte
+        Color baseCu = sprCu != null ? sprCu.color : Color.white;
+        Color baseOjo = sprOjo != null ? sprOjo.color : Color.white;
+        Color baseBoca = sprBoca != null ? sprBoca.color : Color.white;
+
+        Color damageColor = new Color(1f, 0.4f, 0.1f, 1f); // naranja/rojo suave
+
+        while (tiempo < duracion)
+        {
+            // alterna cada 0.1s aprox (10 veces por segundo)
+            bool par = (Mathf.FloorToInt(tiempo * 10f) % 2 == 0);
+            Color colorActualCu = par ? damageColor : baseCu;
+            Color colorActualOjo = par ? damageColor : baseOjo;
+            Color colorActualBoca = par ? damageColor : baseBoca;
+
+            if (sprCu != null) sprCu.color = colorActualCu;
+            if (sprOjo != null) sprOjo.color = colorActualOjo;
+            if (sprBoca != null) sprBoca.color = colorActualBoca;
+
+            tiempo += Time.deltaTime;
+            yield return null;
+        }
+
+        // restauramos los colores originales al terminar
+        if (sprCu != null) sprCu.color = baseCu;
+        if (sprOjo != null) sprOjo.color = baseOjo;
+        if (sprBoca != null) sprBoca.color = baseBoca;
+    }
+    private void HacerVulnerable()
+    {
+        vulnerable = true;
+    }
     private void ProcesarInputs()
     {
         inputHorizontal = Input.GetAxisRaw("Horizontal"); // GetAxisRaw para respuesta más inmediata
@@ -124,7 +183,7 @@ public class PlayerController : MonoBehaviour
 
             bool haySueloFuturo = Physics2D.Raycast(origenRayo + Vector2.up * 0.2f, Vector2.down, 2.5f, capaSuelo);
 
-            Debug.DrawRay(origenRayo + Vector2.up * 0.2f, Vector2.down * 2.5f, checkSuelo ? Color.green : Color.red);
+            Debug.DrawRay(origenRayo + Vector2.up * 0.2f, Vector2.down * 5.5f, checkSuelo ? Color.green : Color.red);
 
             if (!haySueloFuturo)
             {
@@ -223,6 +282,12 @@ public class PlayerController : MonoBehaviour
             {
                 Disparar();
                 atacando = true;
+                if (atacando)
+                {
+                    // ToDo Sonido de disparo
+                    Debug.Log("Disparo realizado. Munición restante: " + municionActual);
+                }
+                
                 siguienteDisparoTime = Time.time + cadenciaDisparo;
             }
             else
