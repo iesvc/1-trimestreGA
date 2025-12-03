@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -24,103 +25,165 @@ public class PlayerController : MonoBehaviour
     public int municionMaxima = 15;
     public float tiempoRecarga = 2f;
 
-    // Variables Privadas de Estado
+    [Header("Vida")]
+    public int vidas = 4;
+
     private Rigidbody2D rb;
     private float inputHorizontal;
     private bool estaEnSuelo;
     private bool agachado;
     private bool corriendo;
-    private bool saltando;
+    private bool atacando;
+    public bool vulnerable = true;
 
-    // Variables de Combate
+    private bool bocaAbierta = false;
+
+    // Controles de animacion para:
+    //          - cuerpo entero (Cu)
+    //          - ojos (Ojo)
+    //          - boca (Boca)
+    private Animator animCu;
+    private Animator animOjo;
+    private Animator animBoca;
+
+    private SpriteRenderer sprCu;
+    private SpriteRenderer sprOjo;
+    private SpriteRenderer sprBoca;
+
+    private bool mirandoDerecha = true;
+
     private float siguienteDisparoTime = 0f;
     private int municionActual;
     private bool recargando = false;
 
-    // Variable para el "Agachado" (Minecraft)
     public float distanciaBorde = 0.6f;
+    
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         municionActual = municionMaxima;
+        Transform hijoOjos = transform.GetChild(0);
+        Transform hijoBoca = transform.GetChild(1);
+        Transform hijoCuerpo = transform.GetChild(2);
+
+        animOjo = hijoOjos.GetComponent<Animator>();
+        animBoca = hijoBoca.GetComponent<Animator>();
+        animCu = hijoCuerpo.GetComponent<Animator>();
+
+        sprOjo = hijoOjos.GetComponent<SpriteRenderer>();
+        sprBoca = hijoBoca.GetComponent<SpriteRenderer>();
+        sprCu = hijoCuerpo.GetComponent<SpriteRenderer>();
+
+        vulnerable = true;
     }
 
-    void Update()
+    private void Update()
     {
         ProcesarInputs();
+        ProcesarDireccion();
+        ProcesarAnimaciones();
         ProcesarDisparo();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         MoverJugador();
         ChequearSuelo();
     }
 
-    void ProcesarInputs()
+    public void QuitarVida()
+    {
+        if (vulnerable)
+        {
+            vulnerable = false;
+
+            vidas--;
+            Debug.Log("Has perdido una vida");
+
+            // Si gestionas el fin de juego en otro sitio, aquí solo avisas.
+            // if (vidas <= 0) FinJuego(); // <- solo si tienes este método
+
+            StartCoroutine(ParpadeoDmg(1.5f));
+            Invoke(nameof(HacerVulnerable), 1.5f);
+        }
+    }
+    private IEnumerator ParpadeoDmg(float duracion)
+    {
+        float tiempo = 0f;
+
+        // Guardamos los colores originales de cada parte
+        Color baseCu = sprCu != null ? sprCu.color : Color.white;
+        Color baseOjo = sprOjo != null ? sprOjo.color : Color.white;
+        Color baseBoca = sprBoca != null ? sprBoca.color : Color.white;
+
+        Color damageColor = new Color(1f, 0.4f, 0.1f, 1f); // naranja/rojo suave
+
+        while (tiempo < duracion)
+        {
+            // alterna cada 0.1s aprox (10 veces por segundo)
+            bool par = (Mathf.FloorToInt(tiempo * 10f) % 2 == 0);
+            Color colorActualCu = par ? damageColor : baseCu;
+            Color colorActualOjo = par ? damageColor : baseOjo;
+            Color colorActualBoca = par ? damageColor : baseBoca;
+
+            if (sprCu != null) sprCu.color = colorActualCu;
+            if (sprOjo != null) sprOjo.color = colorActualOjo;
+            if (sprBoca != null) sprBoca.color = colorActualBoca;
+
+            tiempo += Time.deltaTime;
+            yield return null;
+        }
+
+        // restauramos los colores originales al terminar
+        if (sprCu != null) sprCu.color = baseCu;
+        if (sprOjo != null) sprOjo.color = baseOjo;
+        if (sprBoca != null) sprBoca.color = baseBoca;
+    }
+    private void HacerVulnerable()
+    {
+        vulnerable = true;
+    }
+    private void ProcesarInputs()
     {
         inputHorizontal = Input.GetAxisRaw("Horizontal"); // GetAxisRaw para respuesta más inmediata
 
-        // Detectar teclas de estado
         corriendo = Input.GetKey(KeyCode.LeftShift);
         agachado = Input.GetKey(KeyCode.LeftControl);
 
-        // Salto (Input Down) - Iniciar salto
         if (Input.GetButtonDown("Jump") && estaEnSuelo)
         {
             Saltar();
+            animCu.SetBool("isJumping",true);
         }
 
-        // Salto Variable (Input Up) - "Corte de salto" (Hollow Knight style)
-        // Si soltamos el botón y estamos subiendo, cortamos la velocidad vertical
         if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * multiplicadorCorteSalto);
         }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            atacando = false;
+            bocaAbierta = false;
+        }
     }
 
-    void MoverJugador()
+    private void MoverJugador()
     {
         float velocidadActual = velocidadCaminar;
 
         if (agachado) velocidadActual = velocidadAgachado;
         else if (corriendo) velocidadActual = velocidadCorrer;
 
-        //// Lógica "Minecraft Sneak" (No caerse de bordes si agachado y en suelo)
-        //if (agachado && estaEnSuelo)
-        //{
-        //    if (inputHorizontal != 0)
-        //    {
-        //        // Predecir si habrá suelo en la dirección del movimiento
-        //        // Movemos el checkBorde a la izquierda o derecha según input
-        //        float direccion = Mathf.Sign(inputHorizontal);
-        //        Vector2 posicionCheck = (Vector2)transform.position + (Vector2.right * direccion * 0.1f); // Ajusta el 0.5f al ancho de tu pj
-
-        //        // Lanzamos un Raycast hacia abajo desde la posición futura
-        //        bool haySueloDelante = Physics2D.Raycast(posicionCheck, Vector2.down, 0.2f, capaSuelo);
-
-        //        if (!haySueloDelante)
-        //        {
-        //            // Si no hay suelo, paramos en seco (evita caer)
-        //            inputHorizontal = 0;
-        //            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-        //            return;
-        //        }
-        //    }
-        //}
-        // Lógica "Minecraft Sneak" Mejorada
         if (agachado && estaEnSuelo && inputHorizontal != 0)
         {
             float direccionIntento = Mathf.Sign(inputHorizontal);
 
-            // Usamos distanciaBorde para mirar hacia dónde vamos
             Vector2 origenRayo = (Vector2)transform.position + (Vector2.right * direccionIntento * distanciaBorde);
 
-            bool haySueloFuturo = Physics2D.Raycast(origenRayo + Vector2.up * 0.2f, Vector2.down, 1.5f, capaSuelo);
+            bool haySueloFuturo = Physics2D.Raycast(origenRayo + Vector2.up * 0.2f, Vector2.down, 2.5f, capaSuelo);
 
-            // Debug visual para ver el rayo rojo en la escena
-            Debug.DrawRay(origenRayo + Vector2.up * 0.2f, Vector2.down * 1.5f, Color.red);
+            Debug.DrawRay(origenRayo + Vector2.up * 0.2f, Vector2.down * 5.5f, checkSuelo ? Color.green : Color.red);
 
             if (!haySueloFuturo)
             {
@@ -129,11 +192,59 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Aplicar movimiento estándar
         rb.linearVelocity = new Vector2(inputHorizontal * velocidadActual, rb.linearVelocity.y);
     }
 
-    void Saltar()
+    private void ProcesarDireccion()
+    {
+        if (inputHorizontal > 0.01f && !mirandoDerecha)
+        {
+            Flip();
+        }
+        else if (inputHorizontal < -0.01f && mirandoDerecha)
+        {
+            Flip();
+        }
+    }
+    private void Flip()
+    {
+        mirandoDerecha = !mirandoDerecha;
+
+        // Giramos todos los SpriteRenderers
+        if (sprCu != null) sprCu.flipX = !sprCu.flipX;
+        if (sprOjo != null) sprOjo.flipX = !sprOjo.flipX;
+        if (sprBoca != null) sprBoca.flipX = !sprBoca.flipX;
+
+    }
+    private void ProcesarAnimaciones()
+    {
+        float velocidadHorizontalTotal = Mathf.Abs(rb.linearVelocity.x);
+
+        animCu.SetFloat("speedX", velocidadHorizontalTotal);
+        animCu.SetBool("isMoving", velocidadHorizontalTotal > 0.1f);
+        animCu.SetBool("isRunning", corriendo && velocidadHorizontalTotal > 0.1f);
+        animCu.SetBool("isGrounded", estaEnSuelo);
+        animCu.SetBool("isJumping", !estaEnSuelo);
+        if (!estaEnSuelo)
+        {
+            animOjo.Play("ojosCerrados");
+        }
+        else
+        {
+            animOjo.Play("ojosAbiertos");
+        }
+
+        if (bocaAbierta)
+        {
+            animBoca.Play("bocaAbierta");
+        }
+        else
+        {
+            animBoca.Play("bocaCerrada");
+        }
+    }
+
+    private void Saltar()
     {
         float fuerzaTotal = fuerzaSaltoBase;
 
@@ -145,56 +256,71 @@ public class PlayerController : MonoBehaviour
             fuerzaTotal += bonusInercia;
         }
 
-        // Si estamos agachados, quizás el salto es menor (opcional)
         if (agachado) fuerzaTotal *= 0.8f;
 
-        // Aplicar fuerza (Impulso instantáneo)
         rb.AddForce(Vector2.up * fuerzaTotal, ForceMode2D.Impulse);
     }
 
-    void ProcesarDisparo()
+    private void ProcesarDisparo()
     {
-        // Lógica de disparo
-        if (Input.GetButton("Fire1") && Time.time >= siguienteDisparoTime && !recargando)
+        bool quiereDisparar = Input.GetButton("Fire1");
+
+        // Control de boca según si está intentando disparar y no está recargando
+        if (quiereDisparar && !recargando)
+        {
+            bocaAbierta = true;
+        }
+        else
+        {
+            bocaAbierta = false;
+        }
+
+        // Control de disparo real (cadencia / munición)
+        if (quiereDisparar && Time.time >= siguienteDisparoTime && !recargando)
         {
             if (municionActual > 0)
             {
                 Disparar();
+                atacando = true;
+                if (atacando)
+                {
+                    // ToDo Sonido de disparo
+                    Debug.Log("Disparo realizado. Munición restante: " + municionActual);
+                }
+                
                 siguienteDisparoTime = Time.time + cadenciaDisparo;
             }
             else
             {
+                atacando = false;
+                bocaAbierta = false;
                 StartCoroutine(Recargar());
             }
         }
     }
 
-    void Disparar()
+    private void Disparar()
     {
         municionActual--;
 
-        // Instanciar bala
         GameObject bala = Instantiate(prefabProyectil, puntoDisparo.position, Quaternion.identity);
         Rigidbody2D rbBala = bala.GetComponent<Rigidbody2D>();
 
-        // Calcular dirección (Derecha o Izquierda según input o velocidad actual)
         float direccion = transform.localScale.x;
         if (inputHorizontal != 0) direccion = Mathf.Sign(inputHorizontal);
 
-        // Física del disparo:
-        // 1. Velocidad base del disparo en X e Y (para la parábola)
-        Vector2 velocidadDisparo = new Vector2(direccion * fuerzaDisparoBase, fuerzaDisparoBase * 0.5f); // Un poco hacia arriba para arco
+        Vector2 velocidadDisparo = new Vector2(direccion * fuerzaDisparoBase, fuerzaDisparoBase * 0.5f);
 
-        // 2. HERENCIA DE INERCIA: Sumamos la velocidad actual del jugador a la bala
-        // Esto hace que si corres, la bala llegue más lejos.
         rbBala.linearVelocity = velocidadDisparo + (Vector2)rb.linearVelocity;
     }
 
     IEnumerator Recargar()
     {
         recargando = true;
+        atacando = false;
+        bocaAbierta = false;
         Debug.Log("Recargando...");
-        // Aquí podrías poner una animación o sonido
+        // ToDo Sonido para recargar estrellitas
 
         yield return new WaitForSeconds(tiempoRecarga);
 
@@ -203,32 +329,27 @@ public class PlayerController : MonoBehaviour
         Debug.Log("¡Recarga completa!");
     }
 
-    void ChequearSuelo()
+    private void ChequearSuelo()
     {
         estaEnSuelo = Physics2D.OverlapCircle(checkSuelo.position, radioCheckSuelo, capaSuelo);
     }
 
-    // Dibujar Gizmos para ver los checks en el editor (Incluso sin dar al Play)
     void OnDrawGizmos()
     {
-        // 1. DIBUJAR CHECK SUELO (Círculo Rojo)
         if (checkSuelo != null)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(checkSuelo.position, radioCheckSuelo);
         }
 
-        // 2. DIBUJAR LÍMITES DE BORDE (Líneas Amarillas)
-        // Esto te mostrará dónde comprobará el juego si hay suelo
         Gizmos.color = Color.yellow;
 
-        // Calculamos dónde caerían los rayos a derecha e izquierda
         Vector2 centro = transform.position;
         Vector2 origenDerecha = centro + (Vector2.right * distanciaBorde) + (Vector2.up * 0.2f);
         Vector2 origenIzquierda = centro + (Vector2.left * distanciaBorde) + (Vector2.up * 0.2f);
 
-        // Dibujamos las líneas hacia abajo (longitud 0.5f + 0.2f de offset = 0.7f aprox visual)
         Gizmos.DrawLine(origenDerecha, origenDerecha + Vector2.down * 0.7f);
         Gizmos.DrawLine(origenIzquierda, origenIzquierda + Vector2.down * 0.7f);
     }
+
 }
