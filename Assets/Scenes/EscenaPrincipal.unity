@@ -977,10 +977,6 @@ PrefabInstance:
       propertyPath: chequeoSuelo
       value: 
       objectReference: {fileID: 8092693013313727825}
-    - target: {fileID: 6970448046883430622, guid: edba19aeb6942de4583c4d3afbb8e7ba, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 4.5231
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -112,7 +112,7 @@ Transform:
   m_GameObject: {fileID: 3166278942821863227}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.24, y: 0.15, z: 0.06630423}
+  m_LocalPosition: {x: 4.5231, y: 0.15, z: 0.06630423}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -274,8 +274,9 @@ MonoBehaviour:
   longitudDeteccionRaycast: 15
   capaObjetivo:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   distanciaMinimaPersecucion: 0.5
+  tamanoBoxCast: {x: 0.5, y: 0.5}
   probabilidadCambioDireccionColision: 1
   chequeoSuelo: {fileID: 0}
   radioChequeoSuelo: 0.2
