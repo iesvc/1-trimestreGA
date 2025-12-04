@@ -226,7 +226,7 @@ Camera:
   far clip plane: 5000
   field of view: 100
   orthographic: 1
-  orthographic size: 6
+  orthographic size: 10
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -251,7 +251,7 @@ Transform:
   m_GameObject: {fileID: 50572936}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.33, y: 1.3999999, z: -10}
+  m_LocalPosition: {x: -4.33, y: 2.9999998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -441,10 +441,10 @@ MonoBehaviour:
     ScreenPosition: {x: 0, y: 0.2}
     DeadZone:
       Enabled: 1
-      Size: {x: 0.2, y: 0.2}
+      Size: {x: 0.2, y: 0.3}
     HardLimits:
       Enabled: 0
-      Size: {x: 0.8, y: 0.8}
+      Size: {x: 0.8, y: 1}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 0
   TargetOffset: {x: 0, y: 0, z: 0}
@@ -479,7 +479,7 @@ MonoBehaviour:
     CustomLookAtTarget: 0
   Lens:
     FieldOfView: 100
-    OrthographicSize: 6
+    OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -506,7 +506,7 @@ Transform:
   m_GameObject: {fileID: 805537643}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.33, y: 1.3999999, z: -10}
+  m_LocalPosition: {x: -4.33, y: 2.9999998, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -860,18 +860,28 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 36.443527, y: 78.13913}
-      - {x: 24.505888, y: 78.11467}
-      - {x: 21.425179, y: 78.08315}
-      - {x: 20.719748, y: 78.08187}
-      - {x: 19.797327, y: 78.18295}
-      - {x: 15.47851, y: 78.14786}
-      - {x: -71.74228, y: 77.75731}
+    - - {x: 103.34066, y: 77.95555}
+      - {x: 38.45301, y: 78.01122}
+      - {x: 36.55221, y: 78.01837}
+      - {x: 31.943157, y: 78.00191}
+      - {x: 24.570461, y: 78.017815}
+      - {x: 21.844658, y: 78.03121}
+      - {x: 21.425179, y: 78.02934}
+      - {x: 20.75508, y: 78.02887}
+      - {x: 19.788494, y: 78.016525}
+      - {x: 17.639902, y: 78.01782}
+      - {x: 16.86137, y: 78.01774}
+      - {x: 16.49326, y: 78.00128}
+      - {x: 15.972171, y: 77.99736}
+      - {x: 15.441296, y: 78.00906}
+      - {x: 15.188345, y: 78.01627}
+      - {x: -63.24487, y: 77.95802}
+      - {x: -71.82472, y: 77.9634}
       - {x: -71.67605, y: -11.883871}
       - {x: 107.79195, y: -12.006878}
       - {x: 108.22129, y: -12.021484}
       - {x: 108.237366, y: -12.025286}
-      - {x: 108.12885, y: 77.83297}
+      - {x: 108.12885, y: 77.97491}
   m_UseDelaunayMesh: 0
 --- !u!4 &31635700764984252
 Transform:
