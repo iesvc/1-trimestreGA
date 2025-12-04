@@ -6,7 +6,6 @@ public class ChabbyController : MonoBehaviour
     private enum Estado { Patrulla, Alerta, Ataque }
     [SerializeField] private Estado estadoActual = Estado.Patrulla;
 
-    [Header("Referencias")]
     public Transform origenVista;
     public Transform puntoDisparo;
     public GameObject prefabNubeGas;
@@ -15,7 +14,6 @@ public class ChabbyController : MonoBehaviour
     private SpriteRenderer sprite;
     private Transform player;
 
-    // -------- PATRULLA --------
     [Header("Patrulla")]
     public float velocidadPatrulla = 2f;
     public float minTiempoGiroPatrulla = 2f;
@@ -24,19 +22,16 @@ public class ChabbyController : MonoBehaviour
     private float dirMovimiento = -1f;      // -1 izq, 1 der
     private float temporizadorGiroPatrulla;
 
-    // -------- ALERTA --------
     [Header("Alerta")]
     public float velocidadAlerta = 3f;
     public float duracionAlerta = 3f;
     private Vector2 ultimaPosicionVista;
     private float tiempoEnAlerta = 0f;
 
-    // -------- VISIÓN --------
     [Header("Visión")]
     public float distanciaVista = 10f;
     public LayerMask mascaraVision;
 
-    // -------- ATAQUE --------
     [Header("Ataque")]
     public float velocidadAtaque = 4f;
     public float distanciaMinimaAtaque = 1.5f;
@@ -58,7 +53,6 @@ public class ChabbyController : MonoBehaviour
         GameObject objPlayer = GameObject.FindGameObjectWithTag("Player");
         if (objPlayer != null) player = objPlayer.transform;
 
-        // evitar giros locos por físicas
         rb.constraints |= RigidbodyConstraints2D.FreezeRotation;
 
         ReiniciarTemporizadorPatrulla();
@@ -67,7 +61,6 @@ public class ChabbyController : MonoBehaviour
 
     private void Update()
     {
-        // 1 solo raycast por frame, resultado guardado
         veJugador = VeAlJugador();
 
         switch (estadoActual)
@@ -91,7 +84,6 @@ public class ChabbyController : MonoBehaviour
         rb.linearVelocity = new Vector2(objetivoVelocidadX, rb.linearVelocity.y);
     }
 
-    // ------------------ PATRULLA ------------------
     private void LogicaPatrulla()
     {
         objetivoVelocidadX = dirMovimiento * velocidadPatrulla;
@@ -102,7 +94,6 @@ public class ChabbyController : MonoBehaviour
             dirMovimiento *= -1f;
             ReiniciarTemporizadorPatrulla();
         }
-        // Si VeAlJugador() lo ve, él mismo cambia a Ataque
     }
 
     private void ReiniciarTemporizadorPatrulla()
@@ -110,13 +101,11 @@ public class ChabbyController : MonoBehaviour
         temporizadorGiroPatrulla = Random.Range(minTiempoGiroPatrulla, maxTiempoGiroPatrulla);
     }
 
-    // ------------------ ALERTA ------------------
     private void LogicaAlerta()
     {
         float dist = Vector2.Distance(transform.position, ultimaPosicionVista);
 
-        // mientras no llega, va directo a la última posición
-        if (dist > 0.2f) // un pelín más grande para evitar vibraciones
+        if (dist > 0.2f)
         {
             float dirX = Mathf.Sign(ultimaPosicionVista.x - transform.position.x);
             objetivoVelocidadX = dirX * velocidadAlerta;
@@ -124,7 +113,6 @@ public class ChabbyController : MonoBehaviour
         }
         else
         {
-            // ha llegado, espera un rato por si reapareces
             objetivoVelocidadX = 0f;
             tiempoEnAlerta += Time.deltaTime;
 
@@ -135,10 +123,8 @@ public class ChabbyController : MonoBehaviour
             }
         }
 
-        // si durante la alerta vuelve a verte, VeAlJugador() ya lo pasa a Ataque
     }
 
-    // ------------------ ATAQUE ------------------
     private void LogicaAtaque()
     {
         if (player == null)
@@ -151,25 +137,21 @@ public class ChabbyController : MonoBehaviour
         float distAbs = Mathf.Abs(dx);
         float dirX = Mathf.Sign(dx);
 
-        // perseguir manteniendo distancia mínima
         if (distAbs > distanciaMinimaAtaque)
             objetivoVelocidadX = dirX * velocidadAtaque;
         else
             objetivoVelocidadX = 0f;
 
-        // lanzar ataque si puede y está en rango
         if (jugadorEnRangoAtaque && puedeAtacar)
-            StartCoroutine(CorutinaAtaque());
+            StartCoroutine(CorrutinaAtaque());
 
-        // si deja de verlo y no está en el trigger, pasa a alerta
         if (!jugadorEnRangoAtaque && !veJugador)
         {
             estadoActual = Estado.Alerta;
             tiempoEnAlerta = 0f;
         }
     }
-
-    private IEnumerator CorutinaAtaque()
+    private IEnumerator CorrutinaAtaque()
     {
         puedeAtacar = false;
 
@@ -181,8 +163,6 @@ public class ChabbyController : MonoBehaviour
         yield return new WaitForSeconds(tiempoEntreAtaques);
         puedeAtacar = true;
     }
-
-    // ------------------ VISIÓN ------------------
     private bool VeAlJugador()
     {
         if (player == null || origenVista == null) return false;
@@ -209,7 +189,6 @@ public class ChabbyController : MonoBehaviour
         return false;
     }
 
-    // ------------------ TRIGGERS ATAQUE ------------------
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!other.CompareTag("Player")) return;
