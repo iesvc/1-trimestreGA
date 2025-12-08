@@ -79,6 +79,7 @@ public class UiTutorial : MonoBehaviour
 
     void ExitToMenu()
     {
+        AudioManager.Instance.PlaySFX("Boton");
         SceneManager.LoadScene("MenuPrincipal");
     }
 }
