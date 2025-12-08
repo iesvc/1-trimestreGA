@@ -1498,7 +1498,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f50ccfdd0f26047affbf7d26cbd134, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mediaItems: []
+  mediaItems:
+  - videoClip: {fileID: 32900000, guid: 35f84375a7abe04409562a63083924fe, type: 3}
+    description: Esta es una descrpcion de preuba jkcnkjvkjsnvkj sdcjk cjkbsvkj cd
+      cjbjkvfbc scs ksjbvjk dj vhjd vjhs rvjhevr jh
+  - videoClip: {fileID: 32900000, guid: 7b6b6589127fe1a49915343243d6c5a5, type: 3}
+    description: Esta es una descrpcion de prueba cjbjkbcncalkn cbnjkswb njkwcb ejb 
+      bwkbc v kjb jjjjjloj
   videoPlayer: {fileID: 951424570}
   videoDisplay: {fileID: 721265991}
   descriptionText: {fileID: 1694750587}
