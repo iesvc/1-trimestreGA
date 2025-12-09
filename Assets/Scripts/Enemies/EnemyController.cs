@@ -1,111 +1,86 @@
+
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
     public enum EstadoEnemigo { Patrullando, Persiguiendo }
+
     [Header("Estado Actual")]
-    [Tooltip("El estado de comportamiento actual del enemigo.")]
     public EstadoEnemigo estadoActual = EstadoEnemigo.Patrullando;
 
-    // --- Variables de Ajuste ---
+    // ----------------------------------------------------
     [Header("Movimiento")]
-    [Tooltip("La velocidad horizontal a la que el enemigo patrulla.")]
     public float velocidadPatrulla = 3f;
-    [Tooltip("El multiplicador de velocidad extra cuando el enemigo persigue al jugador.")]
     public float multiplicadorVelocidadPersecucion = 1.5f;
 
+    [Tooltip("Distancia mínima para detenerse y permitir colisión")]
+    public float distanciaMinimaPersecucion = 0.4f;
+
+    // ----------------------------------------------------
     [Header("Detección y Persecución (BoxCast)")]
-    [Tooltip("Objeto vacío desde donde se lanza el rayo (ej: Raycast Pakko).")]
     public Transform origenRaycast;
-    [Tooltip("Distancia a la que el BoxCast buscará al jugador.")]
     public float longitudDeteccionRaycast = 35f;
-    [Tooltip("Capas que el BoxCast debe considerar (debe incluir el jugador).")]
     public LayerMask capaObjetivo;
-
-    // ESTA VARIABLE YA NO SE USA PARA FRENAR
-    public float distanciaMinimaPersecucion = 0.5f;
-
-    [Tooltip("El tamaño del área de detección usada por el BoxCast (X para ancho, Y para alto).")]
     public Vector2 tamanoBoxCast = new Vector2(0.5f, 0.5f);
 
+    // ----------------------------------------------------
     [Header("Comportamiento de Patrulla")]
-    [Tooltip("Probabilidad de que el enemigo cambie de dirección al chocar con un obstáculo o el jugador (mientras patrulla).")]
     [Range(0f, 1f)] public float probabilidadCambioDireccionColision = 1f;
 
+    // ----------------------------------------------------
     [Header("Detección de Suelo")]
-    [Tooltip("Punto (Transform hijo) para chequear si el enemigo toca el suelo.")]
     public Transform chequeoSuelo;
-    [Tooltip("Radio del círculo de detección de suelo.")]
     public float radioChequeoSuelo = 0.2f;
-    [Tooltip("Capas consideradas como 'suelo'.")]
     public LayerMask capaSuelo;
 
-    // --- Componentes ---
-    private Rigidbody2D rb;
-    private Transform objetivoJugador;
-    private bool jugadorEnRangoAtaque = false;
+    // ----------------------------------------------------
+    [Header("Debug")]
+    public bool mostrarBoxCast = true;
 
-    // --- Estado Interno ---
-    private float direccionMovimiento = 1f;
-    private bool estaEnSuelo;
+    // ----------------------------------------------------
+    // Componentes / Estado interno
+    Rigidbody2D rb;
+    Transform objetivoJugador;
+    bool jugadorEnRangoAtaque = false;
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    float direccionMovimiento = 1f;
+    bool estaEnSuelo;
+
+    // ====================================================
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
 
-        if (rb == null || origenRaycast == null)
-        {
-            Debug.LogError("Error de configuración: Rigidbody2D o origenRaycast son nulos.");
-            enabled = false;
-            return;
-        }
+        GameObject objJugador = GameObject.FindGameObjectWithTag("Player");
+        if (objJugador != null)
+            objetivoJugador = objJugador.transform;
 
-        GameObject objetoJugador = GameObject.FindGameObjectWithTag("Player");
-        if (objetoJugador != null)
-        {
-            objetivoJugador = objetoJugador.transform;
-        }
-
-        if (Random.value < 0.5f)
-        {
-            direccionMovimiento = -1f;
-        }
+        direccionMovimiento = Random.value < 0.5f ? -1f : 1f;
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    // ====================================================
 
     void FixedUpdate()
     {
-        if (chequeoSuelo != null)
-        {
-            ChequearSuelo();
-        }
-
-        if (objetivoJugador != null)
-        {
-            ChequearJugador();
-        }
+        ChequearSuelo();
+        ChequearJugador();
 
         if (estadoActual == EstadoEnemigo.Patrullando)
-        {
             MovimientoPatrulla();
-        }
-        else if (estadoActual == EstadoEnemigo.Persiguiendo)
-        {
+        else
             MovimientoPersecucion();
-        }
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    // ====================================================
 
     void ChequearSuelo()
     {
+        if (chequeoSuelo == null) return;
         estaEnSuelo = Physics2D.OverlapCircle(chequeoSuelo.position, radioChequeoSuelo, capaSuelo);
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    // ====================================================
 
     void ChequearJugador()
     {
@@ -113,140 +88,146 @@ public class EnemyController : MonoBehaviour
         bool jugadorDetectado = false;
         int layerPlayer = LayerMask.NameToLayer("Player");
 
-        // Determina las direcciones a chequear (Doble BoxCast en Persiguiendo)
-        Vector2[] direccionesAChequear;
+        Vector2[] direccionesAChequear =
+            estadoActual == EstadoEnemigo.Patrullando
+            ? new Vector2[] { direccionMovimiento < 0 ? Vector2.left : Vector2.right }
+            : new Vector2[] { Vector2.left, Vector2.right };
 
-        if (estadoActual == EstadoEnemigo.Patrullando)
+        foreach (Vector2 direccion in direccionesAChequear)
         {
-            direccionesAChequear = new Vector2[] { (direccionMovimiento < 0) ? Vector2.left : Vector2.right };
-        }
-        else
-        {
-            direccionesAChequear = new Vector2[] { Vector2.left, Vector2.right };
-        }
-
-        foreach (Vector2 direccionRaycast in direccionesAChequear)
-        {
-            RaycastHit2D[] golpes = Physics2D.BoxCastAll(
-                puntoInicio, tamanoBoxCast, 0f, direccionRaycast, longitudDeteccionRaycast, capaObjetivo);
-
-            Debug.DrawRay(puntoInicio, direccionRaycast * longitudDeteccionRaycast, Color.red);
-            // ❌ Log de parámetros de BoxCast eliminado aquí
-
-            if (golpes.Length > 0)
+            if (mostrarBoxCast)
             {
-                foreach (RaycastHit2D golpe in golpes)
+                DibujarBoxCast(
+                    puntoInicio,
+                    tamanoBoxCast,
+                    direccion,
+                    longitudDeteccionRaycast,
+                    Color.red
+                );
+            }
+
+            RaycastHit2D[] golpes = Physics2D.BoxCastAll(
+                puntoInicio,
+                tamanoBoxCast,
+                0f,
+                direccion,
+                longitudDeteccionRaycast,
+                capaObjetivo
+            );
+
+            foreach (RaycastHit2D golpe in golpes)
+            {
+                if (golpe.collider == null) continue;
+
+                if (golpe.collider.gameObject.layer == layerPlayer ||
+                    golpe.collider.CompareTag("Player"))
                 {
-                    if (golpe.collider == null) continue;
-
-                    bool tieneTagPlayer = golpe.collider.CompareTag("Player");
-                    bool estaEnLayerPlayer = golpe.collider.gameObject.layer == layerPlayer;
-
-                    if (tieneTagPlayer || estaEnLayerPlayer)
-                    {
-                        Debug.Log("<color=green>¡JUGADOR DETECTADO! (BoxCastAll). Colisionador: " + golpe.collider.name + "</color>");
-                        jugadorDetectado = true;
-
-                        if (estadoActual != EstadoEnemigo.Persiguiendo)
-                        {
-                            estadoActual = EstadoEnemigo.Persiguiendo;
-                            Debug.Log("<color=magenta>⭐ ESTADO CAMBIADO: A Persiguiendo (A Muerte) ⭐</color>");
-                        }
-
-                        goto DeteccionCompleta;
-                    }
+                    jugadorDetectado = true;
+                    estadoActual = EstadoEnemigo.Persiguiendo;
+                    return;
                 }
             }
         }
 
-    DeteccionCompleta:;
-
-        // Lógica para volver a Patrullar si se pierde el contacto
         if (!jugadorDetectado && estadoActual == EstadoEnemigo.Persiguiendo && !jugadorEnRangoAtaque)
         {
-            Debug.Log("<color=yellow>Jugador perdido. Volviendo a Patrullar.</color>");
             estadoActual = EstadoEnemigo.Patrullando;
-            direccionMovimiento = (Random.value < 0.5f) ? 1f : -1f;
+            direccionMovimiento = Random.value < 0.5f ? -1f : 1f;
         }
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    // ====================================================
 
     void MovimientoPatrulla()
     {
-        rb.linearVelocity = new Vector2(direccionMovimiento * velocidadPatrulla, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(
+            direccionMovimiento * velocidadPatrulla,
+            rb.linearVelocity.y
+        );
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    // ====================================================
 
     void MovimientoPersecucion()
     {
-        float targetX = objetivoJugador.position.x;
-        float currentX = transform.position.x;
+        if (objetivoJugador == null) return;
 
-        // Calcula la dirección para ir hacia el jugador
-        direccionMovimiento = (targetX > currentX) ? 1f : -1f;
+        float distancia = Mathf.Abs(objetivoJugador.position.x - transform.position.x);
 
-        // Aplica la velocidad aumentada
-        float velocidadAumentada = velocidadPatrulla * multiplicadorVelocidadPersecucion;
+        // 🔒 TOPE REAL → ahora sí colisiona
+        if (distancia <= distanciaMinimaPersecucion)
+        {
+            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            return;
+        }
 
-        rb.linearVelocity = new Vector2(direccionMovimiento * velocidadAumentada, rb.linearVelocity.y);
+        direccionMovimiento =
+            objetivoJugador.position.x > transform.position.x ? 1f : -1f;
+
+        float velocidad = velocidadPatrulla * multiplicadorVelocidadPersecucion;
+
+        rb.linearVelocity = new Vector2(
+            direccionMovimiento * velocidad,
+            rb.linearVelocity.y
+        );
     }
 
-    // ---------------------------------------------------------------------------------------------------------------------
+    // ====================================================
+    // DEBUG VISUAL
+    // ====================================================
+
+    void DibujarBoxCast(Vector2 origen, Vector2 size, Vector2 direccion, float distancia, Color color)
+    {
+        Vector2 final = origen + direccion * distancia;
+        DibujarRect(origen, size, color);
+        DibujarRect(final, size, color);
+        Debug.DrawLine(origen, final, color);
+    }
+
+    void DibujarRect(Vector2 centro, Vector2 size, Color color)
+    {
+        Vector2 h = size / 2f;
+        Vector2 a = centro + new Vector2(-h.x, -h.y);
+        Vector2 b = centro + new Vector2(h.x, -h.y);
+        Vector2 c = centro + new Vector2(h.x, h.y);
+        Vector2 d = centro + new Vector2(-h.x, h.y);
+
+        Debug.DrawLine(a, b, color);
+        Debug.DrawLine(b, c, color);
+        Debug.DrawLine(c, d, color);
+        Debug.DrawLine(d, a, color);
+    }
+
+    // ====================================================
 
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-        {
             jugadorEnRangoAtaque = true;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
-        {
             jugadorEnRangoAtaque = false;
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (estadoActual == EstadoEnemigo.Patrullando)
         {
-            Debug.Log("<color=red>¡TE HE ATACADO!</color>");
-
-            if (estadoActual == EstadoEnemigo.Patrullando)
-            {
-                if (Random.value < probabilidadCambioDireccionColision)
-                {
-                    CambiarDireccion();
-                }
-            }
-            else if (estadoActual == EstadoEnemigo.Persiguiendo)
-            {
-                // HUIR TRAS EL CONTACTO (El enemigo se pira)
-                Debug.Log("<color=orange>🎯 ¡TOCADO! Huyendo...</color>");
-                CambiarDireccion(); // Se gira inmediatamente para huir
-                estadoActual = EstadoEnemigo.Patrullando; // Vuelve a Patrullar (alejándose)
-            }
+            if (Random.value < probabilidadCambioDireccionColision)
+                CambiarDireccion();
         }
-        else
+        else if (estadoActual == EstadoEnemigo.Persiguiendo)
         {
-            // Colisión con otros objetos (sólo cambia si está Patrullando)
-            if (estadoActual == EstadoEnemigo.Patrullando)
-            {
-                if (Random.value < probabilidadCambioDireccionColision)
-                {
-                    CambiarDireccion();
-                }
-            }
+            CambiarDireccion();
+            estadoActual = EstadoEnemigo.Patrullando;
         }
     }
 
     void CambiarDireccion()
     {
-        direccionMovimiento *= -1;
+        direccionMovimiento *= -1f;
     }
 }
