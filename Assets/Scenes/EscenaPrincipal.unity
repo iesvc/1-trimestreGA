@@ -314,8 +314,6 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
-<<<<<<< HEAD
-=======
 --- !u!1 &551777010
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +446,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1298031583}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
->>>>>>> development
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,8 +986,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
-<<<<<<< HEAD
-=======
 --- !u!1 &1298031581
 GameObject:
   m_ObjectHideFlags: 0
@@ -1307,7 +1302,6 @@ MonoBehaviour:
       BarrelClipping: 0.25
       Anamorphism: 0
   BlendHint: 0
->>>>>>> development
 --- !u!1001 &1639780604
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3663,17 +3657,9 @@ SceneRoots:
   - {fileID: 4625705589240660200}
   - {fileID: 8590838444051076160}
   - {fileID: 9001857567359418904}
-<<<<<<< HEAD
-=======
   - {fileID: 1298031583}
->>>>>>> development
   - {fileID: 1639780604}
   - {fileID: 3213300570553479992}
   - {fileID: 931928867}
   - {fileID: 1755838990}
   - {fileID: 1127123541}
-<<<<<<< HEAD
-  - {fileID: 1081242948}
-=======
-  - {fileID: 652176285}
->>>>>>> development
