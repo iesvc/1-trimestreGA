@@ -13,6 +13,7 @@ public class ChabbyController : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
     private Transform player;
+    private Animator animator;
 
     [Header("Patrulla")]
     public float velocidadPatrulla = 2f;
@@ -156,6 +157,7 @@ public class ChabbyController : MonoBehaviour
         puedeAtacar = false;
 
         if (prefabNubeGas != null && puntoDisparo != null)
+            
             Instantiate(prefabNubeGas, puntoDisparo.position, Quaternion.identity);
         else
             Debug.LogWarning("Chabby: falta prefabNubeGas o puntoDisparo asignado.");
