@@ -1,0 +1,365 @@
+fileFormatVersion: 2
+guid: 2a6d86192974ffc47971d64b5a96f8c7
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -8335554181144933378
+    second: ChabbySpriteSheet_0
+  - first:
+      213: -2318713505783908688
+    second: ChabbySpriteSheet_1
+  - first:
+      213: 7286700984009868369
+    second: ChabbySpriteSheet_2
+  - first:
+      213: 2929771853572913621
+    second: ChabbySpriteSheet_3
+  - first:
+      213: -435590125187352293
+    second: ChabbySpriteSheet_4
+  - first:
+      213: -7963778434561073112
+    second: ChabbySpriteSheet_5
+  - first:
+      213: -5317217873642190618
+    second: ChabbySpriteSheet_6
+  - first:
+      213: -4340255894681011687
+    second: ChabbySpriteSheet_7
+  - first:
+      213: 8292625950931253041
+    second: ChabbySpriteSheet_8
+  - first:
+      213: -6716178263338719576
+    second: ChabbySpriteSheet_9
+  - first:
+      213: -8772298867703839638
+    second: ChabbySpriteSheet_10
+  - first:
+      213: -1250809854795999063
+    second: ChabbySpriteSheet_11
+  - first:
+      213: 7502311988599954829
+    second: ChabbySpriteSheet_12
+  - first:
+      213: 3702886203889245352
+    second: ChabbySpriteSheet_13
+  - first:
+      213: -7241586974880106329
+    second: ChabbySpriteSheet_14
+  - first:
+      213: 6891349678040000779
+    second: ChabbySpriteSheet_15
+  - first:
+      213: 5592211052291296709
+    second: ChabbySpriteSheet_16
+  - first:
+      213: -6510279962937854086
+    second: ChabbySpriteSheet_17
+  - first:
+      213: 8793564299435878621
+    second: ChabbySpriteSheet_18
+  - first:
+      213: 2265697177935619105
+    second: ChabbySpriteSheet_19
+  - first:
+      213: 6408811904150089856
+    second: ChabbySpriteSheet_20
+  - first:
+      213: -4194068087615328052
+    second: ChabbySpriteSheet_21
+  - first:
+      213: -6262437080311751441
+    second: ChabbySpriteSheet_22
+  - first:
+      213: -8305353417750243846
+    second: ChabbySpriteSheet_23
+  - first:
+      213: 5972510213785096109
+    second: ChabbySpriteSheet_24
+  - first:
+      213: 7258567380849977700
+    second: ChabbySpriteSheet_25
+  - first:
+      213: -2305275020848821780
+    second: ChabbySpriteSheet_26
+  - first:
+      213: 1289694209734187305
+    second: ChabbySpriteSheet_27
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ChabbySpriteSheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1082
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.2835172, y: 0.3607396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efb85dac2a9225c80800000000000000
+      internalID: -8335554181144933378
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChabbySpriteSheet_1
+      rect:
+        serializedVersion: 2
+        x: 1082
+        y: 1082
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.2835172, y: 0.3607396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0b679dff95642dfd0800000000000000
+      internalID: -2318713505783908688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChabbySpriteSheet_2
+      rect:
+        serializedVersion: 2
+        x: 2164
+        y: 1082
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.2835172, y: 0.3607396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 154c56830ff8f1560800000000000000
+      internalID: 7286700984009868369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChabbySpriteSheet_3
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.2835172, y: 0.3607396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d9b62d6af3a8a820800000000000000
+      internalID: 2929771853572913621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChabbySpriteSheet_4
+      rect:
+        serializedVersion: 2
+        x: 1082
+        y: 0
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.2835172, y: 0.3607396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b193a88c61974f9f0800000000000000
+      internalID: -435590125187352293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ChabbySpriteSheet_5
+      rect:
+        serializedVersion: 2
+        x: 2164
+        y: 0
+        width: 1082
+        height: 1082
+      alignment: 9
+      pivot: {x: 0.2835172, y: 0.3607396}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 820221a25b9fa7190800000000000000
+      internalID: -7963778434561073112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 15068761a13f9f644b8c6878e39c3565
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      ChabbySpriteSheet_0: -8335554181144933378
+      ChabbySpriteSheet_1: -2318713505783908688
+      ChabbySpriteSheet_2: 7286700984009868369
+      ChabbySpriteSheet_3: 2929771853572913621
+      ChabbySpriteSheet_4: -435590125187352293
+      ChabbySpriteSheet_5: -7963778434561073112
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
