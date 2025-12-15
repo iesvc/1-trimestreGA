@@ -38,10 +38,13 @@ public class ChabbyController : MonoBehaviour
     public float distanciaMinimaAtaque = 1.5f;
     public float tiempoEntreAtaques = 2f;
 
+    [Header("Ataque (Animación)")]
+    public float duracionAnimAtaque = 0.35f;
+
     private bool jugadorEnRangoAtaque = false;
     private bool puedeAtacar = true;
+    private bool atacando = false;
 
-    // -------- OTROS --------
     private bool mirandoDerecha = false;
     private float objetivoVelocidadX = 0f;
     private bool veJugador = false;
@@ -54,7 +57,7 @@ public class ChabbyController : MonoBehaviour
         GameObject objPlayer = GameObject.FindGameObjectWithTag("Player");
         if (objPlayer != null) player = objPlayer.transform;
 
-        rb.constraints |= RigidbodyConstraints2D.FreezeRotation;
+        animator = GetComponentInChildren<Animator>();
 
         ReiniciarTemporizadorPatrulla();
         ultimaPosicionVista = transform.position;
@@ -82,7 +85,8 @@ public class ChabbyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = new Vector2(objetivoVelocidadX, rb.linearVelocity.y);
+        if (atacando) rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+        else rb.linearVelocity = new Vector2(objetivoVelocidadX, rb.linearVelocity.y);
     }
 
     private void LogicaPatrulla()
@@ -123,7 +127,6 @@ public class ChabbyController : MonoBehaviour
                 ReiniciarTemporizadorPatrulla();
             }
         }
-
     }
 
     private void LogicaAtaque()
@@ -152,19 +155,41 @@ public class ChabbyController : MonoBehaviour
             tiempoEnAlerta = 0f;
         }
     }
+
     private IEnumerator CorrutinaAtaque()
     {
         puedeAtacar = false;
+        atacando = true;
+
+        if (animator) animator.SetBool("IsAttacking", true);
+
+        yield return new WaitForSeconds(0.05f);
 
         if (prefabNubeGas != null && puntoDisparo != null)
-            
-            Instantiate(prefabNubeGas, puntoDisparo.position, Quaternion.identity);
+        {
+            Vector3 bocaLocal = puntoDisparo.localPosition;
+
+            bocaLocal.x = Mathf.Abs(bocaLocal.x) * (mirandoDerecha ? 1f : -1f);
+
+            Vector3 spawnPos = transform.TransformPoint(bocaLocal);
+
+            Instantiate(prefabNubeGas, spawnPos, Quaternion.identity);
+        }
         else
+        {
             Debug.LogWarning("Chabby: falta prefabNubeGas o puntoDisparo asignado.");
+        }
+
+        yield return new WaitForSeconds(duracionAnimAtaque);
+
+        if (animator) animator.SetBool("IsAttacking", false);
+
+        atacando = false;
 
         yield return new WaitForSeconds(tiempoEntreAtaques);
         puedeAtacar = true;
     }
+
     private bool VeAlJugador()
     {
         if (player == null || origenVista == null) return false;
@@ -208,7 +233,6 @@ public class ChabbyController : MonoBehaviour
         jugadorEnRangoAtaque = false;
     }
 
-    // ------------------ FLIP ------------------
     private void ActualizarFlip()
     {
         if (objetivoVelocidadX > 0.05f) mirandoDerecha = true;
