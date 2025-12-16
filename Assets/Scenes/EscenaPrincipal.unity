@@ -1324,7 +1324,7 @@ PrefabInstance:
     - target: {fileID: 1459188385247579635, guid: 143c1d68e15c66d458b7349588e1d873, type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 6200000, guid: 521cbd804de91ee43afc45d05a1dfd0a, type: 2}
+      objectReference: {fileID: 6200000, guid: ef5f2551f1d268749989b6be5639c425, type: 2}
     - target: {fileID: 2696479149426059197, guid: 143c1d68e15c66d458b7349588e1d873, type: 3}
       propertyPath: m_Name
       value: Stella
